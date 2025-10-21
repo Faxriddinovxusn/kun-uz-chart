@@ -3,175 +3,231 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KUN.UZ — Auditoriya Segmentatsiyasi (Interactive)</title>
+  <title>KUN.UZ — Ijtimoiy tarmoqlar segmenti</title>
   <style>
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --muted:#9aa4b2;
-      --accent: #38bdf8;
-      --w:800px;
-      --h:520px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    body {
+      margin: 0;
+      background: #0a0f1a;
+      color: #f1f5f9;
+      font-family: Inter, sans-serif;
+      text-align: center;
+      padding: 40px;
     }
-    *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,var(--bg) 0%, #08101a 100%);color:#e6eef6;display:flex;align-items:center;justify-content:center;height:100vh}
-    .wrap{width:min(95vw,var(--w));background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:28px;display:flex;gap:20px;align-items:center;box-shadow:0 8px 30px rgba(2,6,23,0.7)}
-    .left{flex:1;display:flex;flex-direction:column;align-items:center}
-    .title{font-size:20px;font-weight:700;letter-spacing:0.4px;margin-bottom:8px;text-align:center}
-    .subtitle{font-size:14px;color:var(--muted);margin-bottom:18px;text-align:center}
-    .chart-stage{position:relative;width:360px;height:360px}
-    svg{width:100%;height:100%;transform:rotate(-90deg)}
-    .center-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-    .center-label h1{margin:0;font-size:18px;font-weight:700}
-    .center-label p{margin:4px 0 0;font-size:13px;color:var(--muted)}
-
-    .legend{width:320px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.005));}
-    .legend h3{margin:6px 0 12px;font-size:14px}
-    .item{display:flex;align-items:center;gap:12px;padding:6px 6px;border-radius:8px;transition:background .18s}
-    .item:hover{background:rgba(255,255,255,0.02)}
-    .swatch{width:14px;height:14px;border-radius:4px;flex:0 0 14px}
-    .label{flex:1;font-size:13px}
-    .pct{font-weight:700;font-size:13px;color:#dbeafe}
-
-    /* responsive */
-    @media(max-width:900px){.wrap{flex-direction:column;align-items:center}.legend{width:100%}}
+    h1 {
+      font-size: 34px;
+      font-weight: 800;
+      margin-bottom: 40px;
+    }
+    .chart-section {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+    .chart-box {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 25px;
+      width: 340px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    }
+    h2 {
+      margin-bottom: 15px;
+      font-size: 22px;
+    }
+    .socials {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
+    }
+    .socials a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      transition: transform 120ms ease, background 120ms ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .socials a:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.06);
+    }
+    .socials svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+    .legend {
+      margin-top: 15px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .bar {
+      height: 20px;
+      margin: 6px 0;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap" role="region" aria-label="KUN.UZ auditoriya segmentatsiyasi">
-    <div class="left">
-      <div class="title">KUN.UZ qora kozlarining  segmenti</div>
-      <div class="subtitle">(Demografiya va qiziqishlar bo‘yicha foiz)</div>
+  <h1>KUN.UZ — Ijtimoiy tarmoqlardagi qora kozlar  segmenti</h1>
+  <div class="chart-section">
 
-      <div class="chart-stage" id="chartStage">
-        <svg viewBox="0 0 200 200" aria-hidden="true">
-          <!-- background circle -->
-          <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="40"></circle>
-
-          <!-- slices will be injected by JS as <circle> elements with stroke-dasharray -->
-        </svg>
-
-        <div class="center-label">
-          <h1>KUN.UZ qora kozlarining<br>segmenti</h1>
-          <p>Qora kozlar ning segmenti foizlarda</p>
-        </div>
+    <div class="chart-box" id="instagram">
+      <h2>Instagram — 6.6 mln obunachi</h2>
+      <div class="socials">
+        <a href="https://instagram.com/yourprofile" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+          <!-- Instagram SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="none" fill="#E1306C" opacity="0.03"/>
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z" fill="none" stroke="currentColor" stroke-width="0"/>
+            <path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4z" stroke="none" fill="currentColor"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://t.me/yourchannel" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
+          <!-- Telegram SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21 3L3 10.5l4.5 1.5L8 17l3-2 4 2 5-13z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://youtube.com/yourchannel" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+          <!-- YouTube SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.6 5 12 5 12 5s-6.6 0-7.8.4a2.6 2.6 0 0 0-1.8 1.8A26.6 26.6 0 0 0 2 12a26.6 26.6 0 0 0 .4 4.8c.2.8.9 1.5 1.8 1.8C5.4 19 12 19 12 19s6.6 0 7.8-.4c.8-.2 1.5-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8z" fill="currentColor"/>
+            <path d="M10 15l5-3-5-3v6z" fill="#fff"/>
+          </svg>
+        </a>
+      </div>
+      <canvas id="instaChart" width="300" height="300"></canvas>
+      <div class="legend">
+        👨‍💼 Erkaklar — 55%<br>
+        👩 Ayollar — 45%<br>
+        🧑‍💻 Y avlod (1984–1996) — 60%<br>
+        👦 Z avlod (1997–2007) — 30%<br>
+        🌍 Boshqalar — 10%
       </div>
     </div>
 
-    <div class="legend" id="legend">
-      <h3>Legend — Rang: Segment (Foiz)</h3>
-      <!-- legend items injected by JS -->
+    <div class="chart-box" id="youtube">
+      <h2>YouTube — 3.69 mln obunachi</h2>
+      <div class="socials">
+        <a href="https://youtube.com/yourchannel" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+          <!-- YouTube SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.6 5 12 5 12 5s-6.6 0-7.8.4a2.6 2.6 0 0 0-1.8 1.8A26.6 26.6 0 0 0 2 12a26.6 26.6 0 0 0 .4 4.8c.2.8.9 1.5 1.8 1.8C5.4 19 12 19 12 19s6.6 0 7.8-.4c.8-.2 1.5-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8z" fill="currentColor"/>
+            <path d="M10 15l5-3-5-3v6z" fill="#fff"/>
+          </svg>
+        </a>
+        <a href="https://t.me/yourchannel" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
+          <!-- Telegram SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21 3L3 10.5l4.5 1.5L8 17l3-2 4 2 5-13z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://instagram.com/yourprofile" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+          <!-- Instagram SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="none" fill="#E1306C" opacity="0.03"/>
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z" fill="none" stroke="currentColor" stroke-width="0"/>
+            <path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4z" stroke="none" fill="currentColor"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
+      <canvas id="ytChart" width="300" height="300"></canvas>
+      <div class="legend">
+        👨‍💼 Erkaklar — 65%<br>
+        👩 Ayollar — 35%<br>
+        🧑‍💻 Y avlod — 50%<br>
+        👦 Z avlod — 35%<br>
+        
+      </div>
     </div>
+
+    <div class="chart-box" id="telegram">
+      <h2>Telegram — 1.1 mln obunachi</h2>
+      <div class="socials">
+        <a href="https://t.me/yourchannel" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
+          <!-- Telegram SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21 3L3 10.5l4.5 1.5L8 17l3-2 4 2 5-13z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://instagram.com/yourprofile" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+          <!-- Instagram SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="none" fill="#E1306C" opacity="0.03"/>
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z" fill="none" stroke="currentColor" stroke-width="0"/>
+            <path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4z" stroke="none" fill="currentColor"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://youtube.com/yourchannel" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+          <!-- YouTube SVG -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.6 5 12 5 12 5s-6.6 0-7.8.4a2.6 2.6 0 0 0-1.8 1.8A26.6 26.6 0 0 0 2 12a26.6 26.6 0 0 0 .4 4.8c.2.8.9 1.5 1.8 1.8C5.4 19 12 19 12 19s6.6 0 7.8-.4c.8-.2 1.5-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8z" fill="currentColor"/>
+            <path d="M10 15l5-3-5-3v6z" fill="#fff"/>
+          </svg>
+        </a>
+      </div>
+      <canvas id="tgChart" width="300" height="300"></canvas>
+      <div class="legend">
+        👨‍💼 Erkaklar — 70%<br>
+        👩 Ayollar — 30%<br>
+        🧑‍💻 Y avlod — 50%<br>
+        👦 Z avlod — 35%<br>
+        
+      </div>
+    </div>
+
   </div>
 
-<script>
-// Segment definition (must sum to 100)
-const segments = [
-  {name: "Yoshlar (18–34)", pct: 28},
-  {name: "O‘rta yosh (35–49)", pct: 25.3},
-  {name: "Katta yosh (50+)", pct: 16.2},
-  {name: "Talabalar / Yosh mutaxassislar", pct: 9.1},
-  {name: "Biznes egalari / startaperlar", pct: 4},
-  {name: "Texnologiya sohasi odamlari", pct: 4},
-  {name: "Ta’lim sohasi", pct: 3},
-  {name: "Ijtimoiy tarmoqlarda faol", pct: 3},
-  {name: "Transport / xizmat ishchilari", pct: 2},
-  {name: "Uy bekalari / pensiya yoshidagi", pct: 1},
-  {name: "Chetdagi o‘zbek diasporasi", pct: 1},
-  {name: "Qishloq xo‘jaligi sohasi", pct: 1},
-  {name: "Boshqalar", pct: 2.4}
-];
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const charts = [
+      {
+        id: 'instaChart',
+        data: [55, 45, 40, 50, 10],
+        labels: ['Erkaklar', 'Ayollar', 'Y avlod', 'Z avlod', 'Boshqalar'],
+        colors: ['#3b82f6','#ec4899','#f59e0b','#10b981','#8b5cf6']
+      },
+      {
+        id: 'ytChart',
+        data: [65,35,45,40,15],
+        labels: ['Erkaklar','Ayollar','Y avlod','Z avlod','X avlod'],
+        colors: ['#3b82f6','#ec4899','#f59e0b','#10b981','#8b5cf6']
+      },
+      {
+        id: 'tgChart',
+        data: [70,30,50,35,15],
+        labels: ['Erkaklar','Ayollar','Y avlod','Z avlod','X avlod'],
+        colors: ['#3b82f6','#ec4899','#f59e0b','#10b981','#8b5cf6']
+      }
+    ];
 
-// nice color palette
-const colors = [
-  '#2563eb', '#f97316', '#f43f5e', '#facc15', '#7c3aed', '#06b6d4', '#10b981', '#ef4444', '#8b5cf6', '#a3e635', '#f472b6', '#60a5fa', '#94a3b8'
-];
-
-const svg = document.querySelector('svg');
-const radius = 90;
-const circumference = 2 * Math.PI * radius;
-
-// create slices as stroked circles (concentric with same radius) and use stroke-dasharray to render arcs
-let offset = 0; // stroke-dashoffset start (in percentage of circumference)
-
-segments.forEach((s, i) => {
-  const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-  circle.setAttribute('cx','100');
-  circle.setAttribute('cy','100');
-  circle.setAttribute('r', String(radius - (i*0.01))); // tiny offset so they overlap perfectly
-  circle.setAttribute('fill','none');
-  circle.setAttribute('stroke', colors[i % colors.length]);
-  circle.setAttribute('stroke-width','40');
-  circle.setAttribute('stroke-linecap','butt');
-
-  const portion = s.pct / 100 * circumference;
-  const dashArray = portion + ' ' + (circumference - portion);
-  circle.style.strokeDasharray = dashArray;
-  circle.style.strokeDashoffset = circumference; // hide initially
-  circle.style.transition = 'stroke-dashoffset 1s ease, opacity .4s ease';
-  circle.style.opacity = '0.98';
-
-  // rotate each circle so it starts where previous ended
-  const rotateDeg = (offset / circumference) * 360;
-  circle.setAttribute('transform', `rotate(${rotateDeg} 100 100)`);
-
-  svg.appendChild(circle);
-
-  // store meta for legend
-  s._el = circle;
-  s._color = colors[i % colors.length];
-
-  offset += portion;
-});
-
-// build legend
-const legend = document.getElementById('legend');
-segments.forEach((s,i)=>{
-  const div = document.createElement('div');
-  div.className = 'item';
-  div.innerHTML = `<div class="swatch" style="background:${s._color}"></div>
-                   <div class="label">${s.name}</div>
-                   <div class="pct">${s.pct}%</div>`;
-  // hover interaction: highlight slice
-  div.addEventListener('mouseenter', ()=>{
-    segments.forEach(seg=>seg._el.style.opacity = '0.25');
-    s._el.style.opacity = '1';
-  });
-  div.addEventListener('mouseleave', ()=>{
-    segments.forEach(seg=>seg._el.style.opacity = '0.98');
-  });
-  legend.appendChild(div);
-});
-
-// animate slices one by one
-function animateSlices(){
-  let idx = 0;
-  const circles = Array.from(svg.querySelectorAll('circle')).filter(c=>c.getAttribute('stroke') !== 'rgba(255,255,255,0.03)');
-  function next(){
-    if(idx >= circles.length) return;
-    const c = circles[idx];
-    // reveal by setting dashoffset to 0
-    c.style.strokeDashoffset = '0';
-    idx++;
-    setTimeout(next, 220); // stagger
-  }
-  next();
-}
-
-// initial small delay then run animation
-window.addEventListener('load', ()=>{
-  setTimeout(animateSlices, 500);
-});
-
-// make chart keyboard accessible: press numbers 1..9 to highlight
-window.addEventListener('keydown', (e)=>{
-  if(e.key >= '1' && e.key <= String(Math.min(segments.length,9))){
-    const id = Number(e.key)-1;
-    segments.forEach((seg, i)=> seg._el.style.opacity = (i===id? '1' : '0.25'));
-  }
-  if(e.key === '0') segments.forEach(seg=>seg._el.style.opacity='0.98');
-});
-</script>
+    charts.forEach(chart => {
+      new Chart(document.getElementById(chart.id), {
+        type: 'doughnut',
+        data: {
+          labels: chart.labels,
+          datasets: [{
+            data: chart.data,
+            backgroundColor: chart.colors,
+            borderWidth: 0
+          }]
+        },
+        options: {
+          cutout: '60%',
+          plugins: { legend: { display: false } }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
