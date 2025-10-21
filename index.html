@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KUN.UZ — Auditoriya Segmentatsiyasi (Interactive)</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa4b2;
+      --accent: #38bdf8;
+      --w:800px;
+      --h:520px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg) 0%, #08101a 100%);color:#e6eef6;display:flex;align-items:center;justify-content:center;height:100vh}
+    .wrap{width:min(95vw,var(--w));background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:28px;display:flex;gap:20px;align-items:center;box-shadow:0 8px 30px rgba(2,6,23,0.7)}
+    .left{flex:1;display:flex;flex-direction:column;align-items:center}
+    .title{font-size:20px;font-weight:700;letter-spacing:0.4px;margin-bottom:8px;text-align:center}
+    .subtitle{font-size:14px;color:var(--muted);margin-bottom:18px;text-align:center}
+    .chart-stage{position:relative;width:360px;height:360px}
+    svg{width:100%;height:100%;transform:rotate(-90deg)}
+    .center-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+    .center-label h1{margin:0;font-size:18px;font-weight:700}
+    .center-label p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+
+    .legend{width:320px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.005));}
+    .legend h3{margin:6px 0 12px;font-size:14px}
+    .item{display:flex;align-items:center;gap:12px;padding:6px 6px;border-radius:8px;transition:background .18s}
+    .item:hover{background:rgba(255,255,255,0.02)}
+    .swatch{width:14px;height:14px;border-radius:4px;flex:0 0 14px}
+    .label{flex:1;font-size:13px}
+    .pct{font-weight:700;font-size:13px;color:#dbeafe}
+
+    /* responsive */
+    @media(max-width:900px){.wrap{flex-direction:column;align-items:center}.legend{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="region" aria-label="KUN.UZ auditoriya segmentatsiyasi">
+    <div class="left">
+      <div class="title">KUN.UZ qora kozlarining  segmenti</div>
+      <div class="subtitle">(Demografiya va qiziqishlar bo‘yicha foiz)</div>
+
+      <div class="chart-stage" id="chartStage">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <!-- background circle -->
+          <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="40"></circle>
+
+          <!-- slices will be injected by JS as <circle> elements with stroke-dasharray -->
+        </svg>
+
+        <div class="center-label">
+          <h1>KUN.UZ obunachilarining<br>segmenti</h1>
+          <p>Qora kozlar ning segmenti foizlarda</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend" id="legend">
+      <h3>Legend — Rang: Segment (Foiz)</h3>
+      <!-- legend items injected by JS -->
+    </div>
+  </div>
+
+<script>
+// Segment definition (must sum to 100)
+const segments = [
+  {name: "Yoshlar (18–34)", pct: 28},
+  {name: "O‘rta yosh (35–49)", pct: 25.3},
+  {name: "Katta yosh (50+)", pct: 16.2},
+  {name: "Talabalar / Yosh mutaxassislar", pct: 9.1},
+  {name: "Biznes egalari / startaperlar", pct: 4},
+  {name: "Texnologiya sohasi odamlari", pct: 4},
+  {name: "Ta’lim sohasi", pct: 3},
+  {name: "Ijtimoiy tarmoqlarda faol", pct: 3},
+  {name: "Transport / xizmat ishchilari", pct: 2},
+  {name: "Uy bekalari / pensiya yoshidagi", pct: 1},
+  {name: "Chetdagi o‘zbek diasporasi", pct: 1},
+  {name: "Qishloq xo‘jaligi sohasi", pct: 1},
+  {name: "Boshqalar", pct: 2.4}
+];
+
+// nice color palette
+const colors = [
+  '#2563eb', '#f97316', '#f43f5e', '#facc15', '#7c3aed', '#06b6d4', '#10b981', '#ef4444', '#8b5cf6', '#a3e635', '#f472b6', '#60a5fa', '#94a3b8'
+];
+
+const svg = document.querySelector('svg');
+const radius = 90;
+const circumference = 2 * Math.PI * radius;
+
+// create slices as stroked circles (concentric with same radius) and use stroke-dasharray to render arcs
+let offset = 0; // stroke-dashoffset start (in percentage of circumference)
+
+segments.forEach((s, i) => {
+  const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  circle.setAttribute('cx','100');
+  circle.setAttribute('cy','100');
+  circle.setAttribute('r', String(radius - (i*0.01))); // tiny offset so they overlap perfectly
+  circle.setAttribute('fill','none');
+  circle.setAttribute('stroke', colors[i % colors.length]);
+  circle.setAttribute('stroke-width','40');
+  circle.setAttribute('stroke-linecap','butt');
+
+  const portion = s.pct / 100 * circumference;
+  const dashArray = portion + ' ' + (circumference - portion);
+  circle.style.strokeDasharray = dashArray;
+  circle.style.strokeDashoffset = circumference; // hide initially
+  circle.style.transition = 'stroke-dashoffset 1s ease, opacity .4s ease';
+  circle.style.opacity = '0.98';
+
+  // rotate each circle so it starts where previous ended
+  const rotateDeg = (offset / circumference) * 360;
+  circle.setAttribute('transform', `rotate(${rotateDeg} 100 100)`);
+
+  svg.appendChild(circle);
+
+  // store meta for legend
+  s._el = circle;
+  s._color = colors[i % colors.length];
+
+  offset += portion;
+});
+
+// build legend
+const legend = document.getElementById('legend');
+segments.forEach((s,i)=>{
+  const div = document.createElement('div');
+  div.className = 'item';
+  div.innerHTML = `<div class="swatch" style="background:${s._color}"></div>
+                   <div class="label">${s.name}</div>
+                   <div class="pct">${s.pct}%</div>`;
+  // hover interaction: highlight slice
+  div.addEventListener('mouseenter', ()=>{
+    segments.forEach(seg=>seg._el.style.opacity = '0.25');
+    s._el.style.opacity = '1';
+  });
+  div.addEventListener('mouseleave', ()=>{
+    segments.forEach(seg=>seg._el.style.opacity = '0.98');
+  });
+  legend.appendChild(div);
+});
+
+// animate slices one by one
+function animateSlices(){
+  let idx = 0;
+  const circles = Array.from(svg.querySelectorAll('circle')).filter(c=>c.getAttribute('stroke') !== 'rgba(255,255,255,0.03)');
+  function next(){
+    if(idx >= circles.length) return;
+    const c = circles[idx];
+    // reveal by setting dashoffset to 0
+    c.style.strokeDashoffset = '0';
+    idx++;
+    setTimeout(next, 220); // stagger
+  }
+  next();
+}
+
+// initial small delay then run animation
+window.addEventListener('load', ()=>{
+  setTimeout(animateSlices, 500);
+});
+
+// make chart keyboard accessible: press numbers 1..9 to highlight
+window.addEventListener('keydown', (e)=>{
+  if(e.key >= '1' && e.key <= String(Math.min(segments.length,9))){
+    const id = Number(e.key)-1;
+    segments.forEach((seg, i)=> seg._el.style.opacity = (i===id? '1' : '0.25'));
+  }
+  if(e.key === '0') segments.forEach(seg=>seg._el.style.opacity='0.98');
+});
+</script>
+</body>
+</html>
